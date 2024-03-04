@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessage.textContent = '';
             displayDailyViewList(convertToDate(date));
         } else {
-            errorMessage.textContent = 'Please fill in both event name and date/time correctly.';
+            errorMessage.textContent = 'Please fill in date/time in such format: 05/18, 2:30 PM';
         }
     });
 
