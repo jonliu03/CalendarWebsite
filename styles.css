@@ -117,3 +117,6 @@ body {
 .error-message {
     color: red;
 }
+.valid {
+    border:1px solid green;
+}

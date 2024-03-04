@@ -5,22 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const addedEvents = []; // Array to store added community events
 
     // Define the common structure for events
-    function Event(date, time, name) {
+    function Event(date, time, name, month) {
         this.date = date;
         this.time = time;
         this.name = name;
+        this.month = month;
     }
 
-    // Function to generate calendar days for May
-    function generateCalendar() {
-        const daysInMay = 31; // This should be dynamic, but for simplicity, let's keep it as is
+    // Function to generate calendar days for the given month
+    function generateCalendar(month) {
+        const daysInMonth = month === 'May' ? 31 : 30; // Assuming April has 30 days
         calendar.innerHTML = '';
         const currentMonth = document.getElementById('currentMonth').textContent;
-        for (let i = 1; i <= daysInMay; i++) {
+        for (let i = 1; i <= daysInMonth; i++) {
             const dayElement = document.createElement('div');
             dayElement.classList.add('day');
             dayElement.textContent = i;
-            if (i === 18) { // Highlight May 18 initially
+            if (i === 18 && currentMonth === month) { // Highlight the selected day only if it's in the current month
                 dayElement.classList.add('selected');
                 selectedDay.textContent = `${currentMonth} ${i}`;
                 updateDailyEvents(selectedDay.textContent);
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedEvents = addedEvents.filter(eventData => {
             const eventDate = new Date(eventData.date);
             const formattedSelectedDate = selectedDate.split(' ').slice(0, 2).join(' '); // Format selected date
-            const formattedEventDate = `${eventDate.toLocaleString('en-US', { month: 'short' })} ${eventDate.getDate()}`;
+            const formattedEventDate = `${eventData.month} ${eventDate.getDate()}`;
             return formattedEventDate === formattedSelectedDate;
         });
         selectedEvents.forEach(eventData => {
@@ -58,7 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function displayDailyViewList(selectedDate) { 
+    function displayDailyViewList(selectedDate) {
+        const month = selectedDate.split(' ')[0];
+        updateWithMonth(month);
+
         // Remove 'selected' class from all day elements
         const allDayElements = document.querySelectorAll('.day');
         allDayElements.forEach(day => day.classList.remove('selected'));
@@ -77,57 +81,69 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Initial setup
-    generateCalendar();
+    generateCalendar('May'); // Start with May
 
     // Month navigation
     const prevMonthBtn = document.getElementById('prevMonthBtn');
     const nextMonthBtn = document.getElementById('nextMonthBtn');
 
+    function updateWithMonth(month) {
+        document.getElementById('currentMonth').textContent = month;
+        if (month === 'May') {
+            prevMonthBtn.disabled = false;
+            nextMonthBtn.disabled = true;
+        } else {
+            nextMonthBtn.disabled = false;
+            prevMonthBtn.disabled = true;
+        }
+        generateCalendar(month);
+    }
+
     prevMonthBtn.addEventListener('click', function() {
-        // Update the current month and regenerate the calendar
-        document.getElementById('currentMonth').textContent = 'June';
-        generateCalendar();
+        updateWithMonth('April');
     });
 
     nextMonthBtn.addEventListener('click', function() {
-        // Update the current month and regenerate the calendar
-        document.getElementById('currentMonth').textContent = 'May';
-        generateCalendar();
+        updateWithMonth('May');
     });
 
     const communityEvents = [
-        new Event('05/13', '06:00 PM', 'Poker'),
-        new Event('05/15', '09:00 AM', 'Charity Walk'),
-        new Event('05/20', '01:00 PM', 'Volunteer Day'),
-        new Event('05/25', '12:00 PM', 'Community Picnic')
+        new Event('05/13', '06:00 PM', 'Poker', 'May'),
+        new Event('05/15', '09:00 AM', 'Charity Walk', 'May'),
+        new Event('05/20', '01:00 PM', 'Volunteer Day', 'May'),
+        new Event('05/25', '12:00 PM', 'Community Picnic', 'May'),
+        new Event('04/05', '10:00 AM', 'April Event 1', 'April'),
+        new Event('04/10', '02:00 PM', 'April Event 2', 'April')
     ];
 
     // Populate community events list
     const eventList = document.getElementById('eventList');
 
     communityEvents.forEach(eventData => {
-        const { date, time, name } = eventData;
-        const eventDay = document.createElement('div');
-        eventDay.classList.add('event-day');
-        const dayHeading = document.createElement('h3');
-        dayHeading.textContent = date;
-        eventDay.appendChild(dayHeading);
-        const eventBox = document.createElement('div');
-        eventBox.classList.add('event-box');
-        eventBox.textContent = `${time} - ${name}`;
-        eventBox.addEventListener('click', function() {
-            if (!eventBox.classList.contains('added')) { // Check if event is already added
-                selectedDay.textContent = date; // Switch to event day
-                const eventItem = document.createElement('li');
-                eventItem.textContent = `${time} - ${name}`;
-                sampleEventsList.appendChild(eventItem); // Add event to daily list
-                eventBox.classList.add('added'); // Mark event as added
-                addedEvents.push(eventData); // Add event to addedEvents array
-                displayDailyViewList(convertToDate(date));
-            }
-        });
-        eventDay.appendChild(eventBox);
-        eventList.appendChild(eventDay);
+        const { date, time, name, month } = eventData;
+        if (month === document.getElementById('currentMonth').textContent) {
+            const eventDay = document.createElement('div');
+            eventDay.classList.add('event-day');
+            const dayHeading = document.createElement('h3');
+            dayHeading.textContent = date;
+            eventDay.appendChild(dayHeading);
+            const eventBox = document.createElement('div');
+            eventBox.classList.add('event-box');
+            eventBox.textContent = `${time} - ${name}`;
+            eventBox.addEventListener('click', function() {
+                if (!eventBox.classList.contains('added')) { // Check if event is already added
+                    selectedDay.textContent = date; // Switch to event day
+                    const eventItem = document.createElement('li');
+                    eventItem.textContent = `${time} - ${name}`;
+                    sampleEventsList.appendChild(eventItem); // Add event to daily list
+                    eventBox.classList.add('added'); // Mark event as added
+                    addedEvents.push(eventData); // Add event to addedEvents array
+                    displayDailyViewList(convertToDate(date));
+                }
+            });
+            eventDay.appendChild(eventBox);
+            eventList.appendChild(eventDay);
+        }
     });
 
     // Scrolling functionality
@@ -214,7 +230,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const eventName = eventNameInput.value.trim();
             const eventDateTime = eventDateTimeInput.value.trim();
             const [date, time] = eventDateTime.split(', ');
-            const eventData = new Event(date, time, eventName);
+            const month = document.getElementById('currentMonth').textContent;
+            const eventData = new Event(date, time, eventName, month);
             addedEvents.push(eventData);
             updateDailyEvents(date);
             eventNameInput.value = '';
@@ -222,15 +239,11 @@ document.addEventListener('DOMContentLoaded', function() {
             eventNameInput.classList.remove('valid', 'invalid');
             eventDateTimeInput.classList.remove('valid', 'invalid');
             errorMessage.textContent = '';
-            
-            
             displayDailyViewList(convertToDate(date));
         } else {
             errorMessage.textContent = 'Please fill in both event name and date/time correctly.';
         }
     });
-
-    
 
     deleteButton.addEventListener('click', function() {
         eventNameInput.value = '';
