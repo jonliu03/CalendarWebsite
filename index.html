@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Device Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="view-container">
+            <!-- Monthly Calendar View -->
+            <h2>Monthly View</h2>
+            <div class="calendar-view">
+                <div class="month-navigation">
+                    <button id="prevMonthBtn">&lt;</button>
+                    <h2 id="currentMonth">May</h2>
+                    <button id="nextMonthBtn" disabled>&gt;</button>
+                </div>
+                <div id="calendar">
+                    <!-- Calendar Days Go Here -->
+                </div>
+            </div>
+        </div>
+        <div class="view-container">
+            <!-- Add Event Section -->
+            <h2>Add Event</h2>
+            <div class="add-event-section">
+                <div>
+                    <input type="text" id="eventNameInput" placeholder="Event Name">
+                    <button id="eventNameCheckButton">&check;</button>
+                </div>
+                <div>
+                    <input type="text" id="eventDateTimeInput" placeholder="MM/DD, TT AM/PM">
+                    <button id="eventDateTimeCheckButton">&check;</button>
+                </div>
+                <div>
+                    <button id="confirmButton">Confirm</button>
+                    <button id="deleteButton">Delete</button>
+                </div>
+                <p id="errorMessage" class="error-message"></p>
+            </div>
+        </div>
+        <div class="view-container">
+            <!-- Daily View -->
+            <h2>Daily View</h2>
+            <div class="daily-view">
+                <h2 id="selectedDay">May 18</h2>
+                <ul id="sampleEvents">
+                    <!-- Sample Events Go Here -->
+                </ul>
+            </div>
+        </div>
+        <div class="view-container">
+            <h2>Community Events</h2>
+            <div class="community-events">
+                <div class="event-list" id="eventList">
+                    <!-- Community Events Go Here -->
+                </div>
+                <div class="scroll-buttons">
+                    <button id="scrollUpBtn">&uarr;</button>
+                    <button id="scrollDownBtn">&darr;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
