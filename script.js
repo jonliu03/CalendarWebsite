@@ -57,9 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const eventItem = document.createElement('li');
             eventItem.textContent = `${eventData.name}`;
             document.getElementById(`${eventData.time}`).appendChild(eventItem);
-            console.log(typeof(list));
             
-            //sampleEventsList.appendChild(eventItem);
         });
     }
 
@@ -67,15 +65,15 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("10:00 AM").innerHTML = '';
         document.getElementById("11:00 AM").innerHTML = '';
         document.getElementById("12:00 PM").innerHTML = '';
-        document.getElementById("1:00 PM").innerHTML = '';
-        document.getElementById("2:00 PM").innerHTML = '';
-        document.getElementById("3:00 PM").innerHTML = '';
-        document.getElementById("4:00 PM").innerHTML = '';
-        document.getElementById("5:00 PM").innerHTML = '';
-        document.getElementById("6:00 PM").innerHTML = '';
-        document.getElementById("7:00 PM").innerHTML = '';
-        document.getElementById("8:00 PM").innerHTML = '';
-        document.getElementById("9:00 PM").innerHTML = '';
+        document.getElementById("01:00 PM").innerHTML = '';
+        document.getElementById("02:00 PM").innerHTML = '';
+        document.getElementById("03:00 PM").innerHTML = '';
+        document.getElementById("04:00 PM").innerHTML = '';
+        document.getElementById("05:00 PM").innerHTML = '';
+        document.getElementById("06:00 PM").innerHTML = '';
+        document.getElementById("07:00 PM").innerHTML = '';
+        document.getElementById("08:00 PM").innerHTML = '';
+        document.getElementById("09:00 PM").innerHTML = '';
         
     }
 
