@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to update daily events when day is changed
     function updateDailyEvents(selectedDate) {
+        clearEvents();
         sampleEventsList.innerHTML = ''; // Clear previous events
         // Display only added community events for the selected date
         const selectedEvents = addedEvents.filter(eventData => {
@@ -54,9 +55,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         selectedEvents.forEach(eventData => {
             const eventItem = document.createElement('li');
-            eventItem.textContent = `${eventData.time} - ${eventData.name}`;
-            sampleEventsList.appendChild(eventItem);
+            eventItem.textContent = `${eventData.name}`;
+            document.getElementById(`${eventData.time}`).appendChild(eventItem);
+            console.log(typeof(list));
+            
+            //sampleEventsList.appendChild(eventItem);
         });
+    }
+
+    function clearEvents() {
+        document.getElementById("10:00 AM").innerHTML = '';
+        document.getElementById("11:00 AM").innerHTML = '';
+        document.getElementById("12:00 PM").innerHTML = '';
+        document.getElementById("1:00 PM").innerHTML = '';
+        document.getElementById("2:00 PM").innerHTML = '';
+        document.getElementById("3:00 PM").innerHTML = '';
+        document.getElementById("4:00 PM").innerHTML = '';
+        document.getElementById("5:00 PM").innerHTML = '';
+        document.getElementById("6:00 PM").innerHTML = '';
+        document.getElementById("7:00 PM").innerHTML = '';
+        document.getElementById("8:00 PM").innerHTML = '';
+        document.getElementById("9:00 PM").innerHTML = '';
+        
     }
 
     function displayDailyViewList(selectedDate) {
