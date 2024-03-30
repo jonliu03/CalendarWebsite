@@ -206,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event handling for adding new events
     const eventNameInput = document.getElementById('eventNameInput');
+    const eventNameVoiceInput = document.getElementById('eventNameVoiceInput');
     const eventDateTimeInput = document.getElementById('eventDateTimeInput');
     const eventNameCheckButton = document.getElementById('eventNameCheckButton');
     const eventDateTimeCheckButton = document.getElementById('eventDateTimeCheckButton');
@@ -216,7 +217,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let eventNameValid = false;
     let eventDateTimeValid = false;
 
+    let voiceListenActive = false;
+
     eventNameCheckButton.addEventListener('click', function() {
+        // voiceToText(eventNameInput, eventNameVoiceInput);
         const eventNameValue = eventNameInput.value.trim();
         if (eventNameValue) {
             eventNameInput.classList.remove('invalid');
@@ -227,6 +231,17 @@ document.addEventListener('DOMContentLoaded', function() {
             eventNameInput.classList.add('invalid');
             eventNameValid = false;
         }
+    });
+
+    eventNameVoiceInput.addEventListener('click', function() {
+        if (!voiceListenActive) {
+            voiceListenActive = true;
+
+        } else {
+            voiceListenActive = false;
+        }
+
+        voiceToText(eventNameInput, eventNameVoiceInput);
     });
 
     eventDateTimeCheckButton.addEventListener('click', function() {
@@ -276,4 +291,53 @@ document.addEventListener('DOMContentLoaded', function() {
         firstEventBox.classList.add('highlight');
         scrollToSelectedEvent(); // Scroll to the selected item
     }
+
+    function voiceToText(inputElement, startButton) {
+        //const startButton = document.getElementById('startButton');
+        //const outputText = document.getElementById('outputText');
+
+        // Check if the Speech Recognition API is supported in the browser
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            // Configure recognition settings
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            // Handle recognition results
+            recognition.onresult = (event) => {
+                const result = event.results[event.results.length - 1];
+                const transcript = result[0].transcript;
+                //outputText.textContent = transcript;
+                inputElement.value = transcript;
+            };
+
+            // Handle recognition errors
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+            };
+
+            // Start recognition when the button is clicked
+            startButton.addEventListener('click', () => {
+                if (voiceListenActive) {
+                    recognition.start();
+                    console.log("voice listen active is true");
+
+                } else {
+                    recognition.stop();
+                    console.log("voice listen active is false");
+                }
+                
+                //startButton.disabled = true;
+            });
+
+            // Re-enable the button when recognition ends
+            recognition.onend = () => {
+                startButton.disabled = false;
+            };
+        } else {
+            //outputText.textContent = "Speech recognition not supported in this browser.";
+        }
+            }
 });
